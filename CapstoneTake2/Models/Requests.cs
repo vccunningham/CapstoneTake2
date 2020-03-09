@@ -17,8 +17,9 @@ namespace CapstoneTake2.Models {
         public int UserId { get; set; }
 
 
-        [JsonIgnore]
+        
         public virtual Users User { get; set; }
+        [JsonIgnore]
         public virtual IEnumerable<RequestLines> RequestLine { get; set; }
 
         public Requests() { }

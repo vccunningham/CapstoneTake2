@@ -12,8 +12,9 @@ namespace CapstoneTake2.Models {
         public int ProductId { get; set; }
         public int Quantity { get; set; }
 
-        [JsonIgnore]
+        
         public virtual Products Product { get; set; }
+        [JsonIgnore]
         public virtual Requests Request { get; set; }
 
         public RequestLines() { }
