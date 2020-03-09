@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CapstoneTake2.Models {
@@ -11,6 +12,7 @@ namespace CapstoneTake2.Models {
         public int ProductId { get; set; }
         public int Quantity { get; set; }
 
+        [JsonIgnore]
         public virtual Products Product { get; set; }
         public virtual Requests Request { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CapstoneTake2.Models {
@@ -15,6 +16,8 @@ namespace CapstoneTake2.Models {
         public decimal Total { get; set; }
         public int UserId { get; set; }
 
+
+        [JsonIgnore]
         public virtual Users User { get; set; }
         public virtual IEnumerable<RequestLines> RequestLine { get; set; }
 
