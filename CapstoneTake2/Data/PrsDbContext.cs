@@ -9,18 +9,18 @@ namespace CapstoneTake2.Data {
     public class PrsDbContext : DbContext {
 
 
-            public virtual DbSet<Users> Users { get; set; }
-            public virtual DbSet<Vendors> Vendors { get; set; }
-            public virtual DbSet<Products> Products { get; set; }
-            public virtual DbSet<Requests> Requests { get; set; }
-            public virtual DbSet<RequestLines> RequestLines { get; set; }
+            public virtual DbSet<User> Users { get; set; }
+            public virtual DbSet<Vendor> Vendors { get; set; }
+            public virtual DbSet<Product> Products { get; set; }
+            public virtual DbSet<Request> Requests { get; set; }
+            public virtual DbSet<RequestLine> RequestLines { get; set; }
 
             public PrsDbContext() { }
             public PrsDbContext(DbContextOptions<PrsDbContext> options) : base(options) { }
 
             protected override void OnModelCreating(ModelBuilder model) {
 
-                model.Entity<Products>(e => {
+                model.Entity<Product>(e => {
                     e.ToTable("Products");
                     e.HasKey(x => x.Id);
                     e.HasIndex(x => x.PartNbr).IsUnique();
@@ -32,7 +32,7 @@ namespace CapstoneTake2.Data {
                     e.Property(x => x.VendorId);
                 });
 
-                model.Entity<Vendors>(e => {
+                model.Entity<Vendor>(e => {
                     e.ToTable("Vendors");
                     e.HasKey(x => x.Id);
                     e.HasIndex(x => x.Code).IsUnique();
@@ -45,7 +45,7 @@ namespace CapstoneTake2.Data {
                     e.Property(x => x.Email).HasMaxLength(255);
                 });
 
-                model.Entity<Users>(e => {
+                model.Entity<User>(e => {
                     e.ToTable("Users");
                     e.HasKey(x => x.Id);
                     e.HasIndex(x => x.Username).IsUnique();
@@ -58,7 +58,7 @@ namespace CapstoneTake2.Data {
                     e.Property(x => x.IsAdmin);
                 });
 
-                model.Entity<Requests>(e => {
+                model.Entity<Request>(e => {
                     e.ToTable("Requests");
                     e.HasKey(x => x.Id);
                     e.Property(x => x.Description).HasMaxLength(80).IsRequired();
@@ -72,7 +72,7 @@ namespace CapstoneTake2.Data {
 
                 });
 
-                model.Entity<RequestLines>(e => {
+                model.Entity<RequestLine>(e => {
                     e.ToTable("RequestLine");
                     e.HasKey(x => x.Id);
                     e.Property(x => x.ProductId).IsRequired();

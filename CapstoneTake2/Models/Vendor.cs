@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace CapstoneTake2.Models {
-    public class Vendors {
+    public class Vendor {
 
         public int Id { get; set; }
         public string Code { get; set; }
@@ -19,6 +19,6 @@ namespace CapstoneTake2.Models {
 
         //public virtual Products Product { get; set; }
 
-        public Vendors() { }
+        public Vendor() { }
     }
 }

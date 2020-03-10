@@ -23,14 +23,14 @@ namespace CapstoneTake2.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Products>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             return await _context.Products.ToListAsync();
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Products>> GetProducts(int id)
+        public async Task<ActionResult<Product>> GetProducts(int id)
         {
             var products = await _context.Products.FindAsync(id);
 
@@ -46,7 +46,7 @@ namespace CapstoneTake2.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProducts(int id, Products products)
+        public async Task<IActionResult> PutProducts(int id, Product products)
         {
             if (id != products.Id)
             {
@@ -78,7 +78,7 @@ namespace CapstoneTake2.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Products>> PostProducts(Products products)
+        public async Task<ActionResult<Product>> PostProducts(Product products)
         {
             _context.Products.Add(products);
             await _context.SaveChangesAsync();
@@ -88,7 +88,7 @@ namespace CapstoneTake2.Controllers
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Products>> DeleteProducts(int id)
+        public async Task<ActionResult<Product>> DeleteProducts(int id)
         {
             var products = await _context.Products.FindAsync(id);
             if (products == null)

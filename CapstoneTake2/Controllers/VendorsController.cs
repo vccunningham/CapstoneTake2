@@ -23,14 +23,14 @@ namespace CapstoneTake2.Controllers
 
         // GET: api/Vendors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Vendors>>> GetVendors()
+        public async Task<ActionResult<IEnumerable<Vendor>>> GetVendors()
         {
             return await _context.Vendors.ToListAsync();
         }
 
         // GET: api/Vendors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Vendors>> GetVendors(int id)
+        public async Task<ActionResult<Vendor>> GetVendors(int id)
         {
             var vendors = await _context.Vendors.FindAsync(id);
 
@@ -46,7 +46,7 @@ namespace CapstoneTake2.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVendors(int id, Vendors vendors)
+        public async Task<IActionResult> PutVendors(int id, Vendor vendors)
         {
             if (id != vendors.Id)
             {
@@ -78,7 +78,7 @@ namespace CapstoneTake2.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Vendors>> PostVendors(Vendors vendors)
+        public async Task<ActionResult<Vendor>> PostVendors(Vendor vendors)
         {
             _context.Vendors.Add(vendors);
             await _context.SaveChangesAsync();
@@ -88,7 +88,7 @@ namespace CapstoneTake2.Controllers
 
         // DELETE: api/Vendors/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Vendors>> DeleteVendors(int id)
+        public async Task<ActionResult<Vendor>> DeleteVendors(int id)
         {
             var vendors = await _context.Vendors.FindAsync(id);
             if (vendors == null)

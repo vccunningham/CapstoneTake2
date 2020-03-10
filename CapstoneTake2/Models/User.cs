@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace CapstoneTake2.Models {
-    public class Users {
+    public class User {
 
         public int Id { get; set; }
         public string Username { get; set; }
@@ -19,6 +19,6 @@ namespace CapstoneTake2.Models {
 
 
 
-        public Users() { }
+        public User() { }
     }
 }

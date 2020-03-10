@@ -21,16 +21,33 @@ namespace CapstoneTake2.Controllers
             _context = context;
         }
 
+        private void RecalculateTotal(int Id) {
+
+            var request = _context.Requests.Find(Id);
+
+            request.Total = _context.RequestLines
+            .Include(l => l.Product)
+            .Where(l => l.RequestId == Id)
+            .Sum(l => l.Quantity * l.Product.Price);
+
+
+            //for loop to calculate the total from each requestline
+            //take the total and update the total on the request
+            //save the request in the database
+
+
+        }
+
         // GET: api/RequestLines
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RequestLines>>> GetRequestLines()
+        public async Task<ActionResult<IEnumerable<RequestLine>>> GetRequestLines()
         {
             return await _context.RequestLines.ToListAsync();
         }
 
         // GET: api/RequestLines/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<RequestLines>> GetRequestLines(int id)
+        public async Task<ActionResult<RequestLine>> GetRequestLines(int id)
         {
             var requestLines = await _context.RequestLines.FindAsync(id);
 
@@ -46,7 +63,7 @@ namespace CapstoneTake2.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRequestLines(int id, RequestLines requestLines)
+        public async Task<IActionResult> PutRequestLines(int id, RequestLine requestLines)
         {
             if (id != requestLines.Id)
             {
@@ -78,7 +95,7 @@ namespace CapstoneTake2.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<RequestLines>> PostRequestLines(RequestLines requestLines)
+        public async Task<ActionResult<RequestLine>> PostRequestLines(RequestLine requestLines)
         {
             _context.RequestLines.Add(requestLines);
             await _context.SaveChangesAsync();
@@ -88,7 +105,7 @@ namespace CapstoneTake2.Controllers
 
         // DELETE: api/RequestLines/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<RequestLines>> DeleteRequestLines(int id)
+        public async Task<ActionResult<RequestLine>> DeleteRequestLines(int id)
         {
             var requestLines = await _context.RequestLines.FindAsync(id);
             if (requestLines == null)

@@ -5,7 +5,8 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CapstoneTake2.Models {
-    public class Requests {
+    public class Request {
+        internal int RequestID;
 
         public int Id { get; set; }
         public string Description { get; set; }
@@ -18,11 +19,11 @@ namespace CapstoneTake2.Models {
 
 
         
-        public virtual Users User { get; set; }
+        public virtual User User { get; set; }
         [JsonIgnore]
-        public virtual IEnumerable<RequestLines> RequestLine { get; set; }
+        public virtual IEnumerable<RequestLine> RequestLine { get; set; }
 
-        public Requests() { }
+        public Request() { }
 
     }
 }
