@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CapstoneTake2.Models {
     public class Request {
-        internal int RequestID;
+        
 
         public int Id { get; set; }
         public string Description { get; set; }

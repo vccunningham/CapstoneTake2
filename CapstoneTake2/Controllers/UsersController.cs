@@ -42,6 +42,25 @@ namespace CapstoneTake2.Controllers
             return users;
         }
 
+        [HttpGet("login/{username}/{password}")]
+        public ActionResult<User> Login(string username, string password) {
+
+
+            var users = _context.Users.SingleOrDefault(x => x.Username == username && x.Password == password);
+            
+            if (users == null) {
+
+                return NotFound();
+            }
+
+            return Ok(users);
+
+
+
+        }
+
+
+
 
         // PUT: api/Users/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for

@@ -12,8 +12,15 @@ namespace CapstoneTake2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RequestsController : ControllerBase
-    {
+    public class RequestsController : ControllerBase {
+
+        public const string StatusNew      = "NEW";
+        public const string StatusEdit     = "EDIT";
+        public const string StatusReview   = "REVIEW";
+        public const string StatusApproved = "APPROVED";
+        public const string StatusRejected = "REJECTED";
+
+
         private readonly PrsDbContext _context;
 
         public RequestsController(PrsDbContext context)
@@ -43,14 +50,12 @@ namespace CapstoneTake2.Controllers
         }
 
         [HttpGet("review/{id}")]
-        private async Task<ActionResult<IEnumerable<Request>>> GetReviews() {
+        public async Task<ActionResult<IEnumerable<Request>>> GetReviews() {
 
             return await _context.Requests.ToListAsync();
             
             
         }
-
-
 
         // PUT: api/Requests/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -84,16 +89,20 @@ namespace CapstoneTake2.Controllers
             return NoContent();
         }
 
-        [HttpPost("review")]
+        [HttpPost("reviewstatus")]
         public async Task<ActionResult<Request>> Review(Request request) {
             if (request.Total > 50) {
 
-                request.Status = "Review";
+                request.Status = StatusReview;
+            } 
+            else {
+                request.Status = StatusApproved;
             }
-                _context.Requests.Add(request);
+
+            _context.Requests.Add(request);
                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRequest", new { id = request.Id }, request);
+            return request;
 
         }
 

@@ -21,14 +21,14 @@ namespace CapstoneTake2.Controllers
             _context = context;
         }
 
-        private void RecalculateTotal(int Id) {
-
-            var request = _context.Requests.Find(Id);
-
-            request.Total = _context.RequestLines
-            .Include(l => l.Product)
-            .Where(l => l.RequestId == Id)
-            .Sum(l => l.Quantity * l.Product.Price);
+        public void RecalculateTotal(int requestId) {
+                
+                var total = _context.RequestLines
+                .Include(l => l.Product)
+                .Where(l => l.RequestId == requestId)
+                .Sum(l => l.Quantity * l.Product.Price);
+               
+                 _context.SaveChanges();
 
 
             //for loop to calculate the total from each requestline
@@ -90,6 +90,20 @@ namespace CapstoneTake2.Controllers
 
             return NoContent();
         }
+        [HttpPut("insert/{id}")]
+        public RequestLine Insert(RequestLine requestLine) {
+            if (requestLine == null) throw new Exception("Can't be null");
+            _context.RequestLines.Add(requestLine);
+            try {
+                _context.SaveChanges();
+                RecalculateTotal(requestLine.RequestId);
+            } catch (DbUpdateException ex) {
+                throw new Exception("Must be unique", ex);
+            } catch (Exception) {
+                throw;
+            }
+            return requestLine;
+        }
 
         // POST: api/RequestLines
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -101,6 +115,20 @@ namespace CapstoneTake2.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRequestLines", new { id = requestLines.Id }, requestLines);
+        }
+        [HttpPost("update/{id}")]
+        public RequestLine Update(RequestLine requestLine) {
+            if (requestLine == null) throw new Exception("Can't be null");
+            _context.RequestLines.Add(requestLine);
+            try {
+                _context.SaveChanges();
+                RecalculateTotal(requestLine.RequestId);
+            } catch (DbUpdateException ex) {
+                throw new Exception("Must be unique", ex);
+            } catch (Exception) {
+                throw;
+            }
+            return requestLine;
         }
 
         // DELETE: api/RequestLines/5
@@ -122,6 +150,20 @@ namespace CapstoneTake2.Controllers
         private bool RequestLinesExists(int id)
         {
             return _context.RequestLines.Any(e => e.Id == id);
+        }
+        [HttpDelete("delete/{id}")]
+        public RequestLine Delete(RequestLine requestLine) {
+            if (requestLine == null) throw new Exception("Can't be null");
+            _context.RequestLines.Add(requestLine);
+            try {
+                _context.SaveChanges();
+                RecalculateTotal(requestLine.RequestId);
+            } catch (DbUpdateException ex) {
+                throw new Exception("Must be unique", ex);
+            } catch (Exception) {
+                throw;
+            }
+            return requestLine;
         }
     }
 }
