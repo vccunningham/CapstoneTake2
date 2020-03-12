@@ -22,11 +22,13 @@ namespace CapstoneTake2.Controllers
         }
 
         public void RecalculateTotal(int requestId) {
-                
+
+            var request = _context.Requests.SingleOrDefault(dbrecord => dbrecord.Id == requestId);
                 var total = _context.RequestLines
                 .Include(l => l.Product)
                 .Where(l => l.RequestId == requestId)
                 .Sum(l => l.Quantity * l.Product.Price);
+            request.Total = total;
                
                  _context.SaveChanges();
 
@@ -90,7 +92,7 @@ namespace CapstoneTake2.Controllers
 
             return NoContent();
         }
-        [HttpPut("insert/{id}")]
+        [HttpPost("insert/{id}")]
         public RequestLine Insert(RequestLine requestLine) {
             if (requestLine == null) throw new Exception("Can't be null");
             _context.RequestLines.Add(requestLine);
@@ -116,17 +118,28 @@ namespace CapstoneTake2.Controllers
 
             return CreatedAtAction("GetRequestLines", new { id = requestLines.Id }, requestLines);
         }
-        [HttpPost("update/{id}")]
+        
+        [HttpPut("update/{id}")]
         public RequestLine Update(RequestLine requestLine) {
             if (requestLine == null) throw new Exception("Can't be null");
-            _context.RequestLines.Add(requestLine);
-            try {
-                _context.SaveChanges();
-                RecalculateTotal(requestLine.RequestId);
-            } catch (DbUpdateException ex) {
-                throw new Exception("Must be unique", ex);
-            } catch (Exception) {
-                throw;
+            var DBRequestLine = _context.RequestLines.SingleOrDefault(x => x.Id == requestLine.Id);
+            if (DBRequestLine == null) {
+                throw new Exception("Can't find Requestline in database!");
+
+            } else {
+                try {
+                    DBRequestLine.Quantity = requestLine.Quantity;
+                    DBRequestLine.ProductId = requestLine.ProductId;
+                    int OriginalRequestID = DBRequestLine.RequestId;
+                    DBRequestLine.RequestId = requestLine.RequestId;
+                    _context.SaveChanges();
+                    RecalculateTotal(OriginalRequestID);
+                    RecalculateTotal(requestLine.RequestId);
+                } catch (DbUpdateException ex) {
+                    throw new Exception("Must be unique", ex);
+                } catch (Exception) {
+                    throw;
+                }
             }
             return requestLine;
         }
