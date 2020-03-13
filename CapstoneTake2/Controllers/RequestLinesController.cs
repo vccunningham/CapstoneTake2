@@ -167,8 +167,13 @@ namespace CapstoneTake2.Controllers
         [HttpDelete("delete/{id}")]
         public RequestLine Delete(RequestLine requestLine) {
             if (requestLine == null) throw new Exception("Can't be null");
-            _context.RequestLines.Add(requestLine);
+            var DBRequestLine = _context.RequestLines.SingleOrDefault(x => x.Id == requestLine.Id);
+            _context.RequestLines.Remove(requestLine);
             try {
+                DBRequestLine.Quantity = requestLine.Quantity;
+                DBRequestLine.ProductId = requestLine.ProductId;
+                int OriginalRequestID = DBRequestLine.RequestId;
+                DBRequestLine.RequestId = requestLine.RequestId;
                 _context.SaveChanges();
                 RecalculateTotal(requestLine.RequestId);
             } catch (DbUpdateException ex) {
