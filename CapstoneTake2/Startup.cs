@@ -20,8 +20,8 @@ namespace CapstoneTake2 {
 
         public IConfiguration Configuration { get; }
         public readonly string DefaultCorsPolicy = "_defaultCorsPolicy";
-        public string[] AllowOrigins = { "http://localhost:4200" };
-        public string[] AllowMethods = { "GET", "POST", "PUT", "DELETE" };
+        public string[] AllowAnyOrigins = { "http://localhost:4200" };
+        public string[] AllowAnyMethods = { "GET", "POST", "PUT", "DELETE" };
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -33,7 +33,7 @@ namespace CapstoneTake2 {
             });
             services.AddCors(option =>
                 option.AddPolicy(DefaultCorsPolicy, x =>
-                x.WithOrigins(AllowOrigins).WithMethods(AllowMethods).AllowAnyHeader()
+                x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
                 )
             );
         }
