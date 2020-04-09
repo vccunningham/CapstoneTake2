@@ -49,12 +49,18 @@ namespace CapstoneTake2.Controllers
             return request;
         }
 
-        [HttpGet("review/{id}")]
-        public async Task<ActionResult<IEnumerable<Request>>> GetReviews() {
+        [HttpPut("review/{id}")]
+        public async Task<IActionResult> review(int id) {
 
-            return await _context.Requests.ToListAsync();
-            
-            
+            var request = await _context.Requests.FindAsync(id);
+
+            if (request.Total <= 50) {
+                request.Status = "APPROVED";
+            } else {
+                request.Status = "REVIEW";
+            }
+
+            return await PutRequest(id, request);
         }
 
         // PUT: api/Requests/5
@@ -68,7 +74,7 @@ namespace CapstoneTake2.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(request).State = EntityState.Modified;
+            _context.Entry(request).State = EntityState.Modified;// this was changed.
 
             try
             {
@@ -89,7 +95,7 @@ namespace CapstoneTake2.Controllers
             return NoContent();
         }
 
-        [HttpPost("reviewstatus")]
+        [HttpPut("reviewstatus")]
         public async Task<ActionResult<Request>> Review(Request request) {
             if (request.Total > 50) {
 
@@ -106,23 +112,23 @@ namespace CapstoneTake2.Controllers
 
         }
 
-        [HttpPost("approved")]
+        [HttpPut("approved")]
         public async Task<ActionResult<Request>> Approved(Request request) {
                 
+            request = _context.Requests.Find(request.Id);
             request.Status = "Approved";
             
-            _context.Requests.Add(request);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRequest", new { id = request.Id }, request);
+            return Ok(request);
 
         }
-        [HttpPost("reject")]
+        [HttpPut("reject")]
         public async Task<ActionResult<Request>> Reject(Request request) {
 
+            request = _context.Requests.Find(request.Id);
             request.Status = "Rejected";
 
-            _context.Requests.Add(request);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRequest", new { id = request.Id }, request);

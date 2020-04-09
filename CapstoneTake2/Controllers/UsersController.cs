@@ -42,7 +42,7 @@ namespace CapstoneTake2.Controllers
             return users;
         }
 
-        [HttpGet("login/{username}/{password}")]
+        [HttpGet("{username}/{password}")]
         public ActionResult<User> Login(string username, string password) {
 
 
